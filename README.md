@@ -111,3 +111,26 @@ vim.keymap.set('n', '<leader>w', ':r !groq-whisper<CR>')
 | `start_prompt` | 🎙️ | Shown when recording starts |
 | `model` | whisper-large-v3-turbo | Whisper model to use |
 | `language` | en | ISO-639-1 language code |
+
+## Platform Support
+
+Currently tested on **Linux** (Ubuntu/Debian with PulseAudio/PipeWire).
+
+### macOS Compatibility
+
+The script uses Linux-specific tools that need adaptation for macOS:
+
+| Component | Linux | macOS | Notes |
+|-----------|-------|-------|-------|
+| `pactl` | PulseAudio | N/A | Use `SwitchAudioSource` (`brew install switchaudio-osx`) |
+| `timeout` | Built-in | N/A | Install via `brew install coreutils` (provides `gtimeout`) |
+| `stat -c%s` | Linux syntax | `stat -f%z` | Different flag for file size |
+| Audio backend | ALSA/PulseAudio | CoreAudio | Sox handles this, but device names differ |
+
+To run on macOS, you would need to:
+1. Install dependencies: `brew install sox coreutils switchaudio-osx`
+2. Modify mic listing to use `SwitchAudioSource -a -t input`
+3. Replace `timeout` with `gtimeout`
+4. Update `stat` syntax for file size checks
+
+Contributions for cross-platform support are welcome!
